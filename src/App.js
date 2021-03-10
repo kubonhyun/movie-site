@@ -1,25 +1,38 @@
-import logo from './logo.svg';
-import './App.css';
+import React from "react";
+import Display from "./Display";
+import Data from "./Data.json";
+import "./Reset.css";
+import "./App.css";
 
-function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
+class App extends React.Component {
+  state = {
+      isLoading : true,
+      movies : []
+  };
+
+  getMovies = () => {
+    const {movies} = Data;
+    this.setState({movies, isLoading :false})
+  }
+
+  componentDidMount() {
+    this.getMovies();
+  }
+
+  render() {
+    const {isLoading, movies} = this.state;
+    return (
+    <section className="max-container"><header><div className="h-text">Movie Site</div></header>{
+      isLoading ? "Loading" : <div className="container">
+        <ul className="t-box">{
+        movies.map(movie => (
+          <Display key={movie.id} rating={movie.rating} title={movie.title} id={movie.id} img={movie.img_url} des={movie.des} actor={movie.actor} />
+        ))
+      }</ul></div>}
+      </section>
+      )
+  }
 }
+
 
 export default App;
